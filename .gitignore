@@ -130,3 +130,8 @@ dmypy.json
 
 # MacOS only
 .DS_Store
+
+/weights/cluster/cluster*
+/weights/reg1/reg1*
+/weights/reg2/reg2*
+.idea/

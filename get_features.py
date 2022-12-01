@@ -1,10 +1,11 @@
-"""Generates the feature file (.csv)"""
+"""Generates features"""
 
 import os
 import sys
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 from rawdata_config import args
 
@@ -231,13 +232,13 @@ def get_feature_vector(chain, mutation_location, wild, mutant):
     return features
 
 
-def generate_file(args):
+def generate_file():
     data = pd.read_csv(args.raw)
 
     features = []
     targets = []
 
-    for i in range(len(data)):
+    for i in tqdm(range(len(data))):
         chain = data[args.chain][i]
         mutation_location = data[args.mutation_location][i]
         wild = data[args.wild_type][i]
@@ -253,6 +254,10 @@ def generate_file(args):
             sys.exit()
 
     features = pd.DataFrame(features, dtype='float')
+
+    features.mean(axis=0).to_csv(args.mean, index=False)
+    features.std(axis=0).to_csv(args.std, index=False)
+
     features = features.apply(lambda x: (x - x.mean()) / x.std())
     features['targets'] = targets
 
@@ -260,5 +265,21 @@ def generate_file(args):
     print(f'Successfully generated a dataset of {len(features)} records.')
 
 
+def generate_one_vector(chain, mutation_location, wild, mutant):
+    feat = None
+
+    if check_seq(chain) and check_pssm(chain):
+        feat = get_feature_vector(chain, mutation_location, wild, mutant)
+        feat = np.array(feat)
+    else:
+        print(f'Error: Sequence file or PSSM file for chain {chain} (row index {i} in raw data) not found!')
+        sys.exit()
+
+    mean = pd.read_csv(args.mean).to_numpy().flatten()
+    std = pd.read_csv(args.std).to_numpy().flatten()
+    feat = (feat - mean) / std
+    return feat
+
+
 if __name__ == '__main__':
-    generate_file(args)
+    generate_file()

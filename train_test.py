@@ -1,5 +1,7 @@
 """Trains and tests the model"""
 
+import pickle
+
 import numpy as np
 import pandas as pd
 import sklearn.model_selection as ms
@@ -17,14 +19,15 @@ if __name__ == '__main__':
     spliter = ms.ShuffleSplit(n_splits=100, test_size=0.2, random_state=args.random_state)
     RMSE, MSE, PEARSON = [], [], []
 
+    counter = 1
     with tqdm(total=100) as bar:
         for train, test in spliter.split(data):
             x_train, y_train, x_test, y_test = data.iloc[train, :-1], data.iloc[train, -1], \
                                                data.iloc[test, :-1], data.iloc[test, -1]
 
-            cluster = KMeans(n_clusters=2, random_state=args.random_state).fit(x_train)
+            cluster = KMeans(n_clusters=2, random_state=args.random_state).fit(x_train.values)
             labels_train = cluster.labels_
-            labels_test = cluster.predict(x_test)
+            labels_test = cluster.predict(x_test.values)
 
             reg1 = xgb.XGBRegressor(objective='reg:squarederror', eval_metric='rmse',
                                     n_estimators=args.n_estimators, max_depth=args.max_depth,
@@ -63,6 +66,11 @@ if __name__ == '__main__':
             PEARSON.append(pearson)
 
             print(f'rmse={rmse:.4f}, mse={mse:.4f}, pearsonr={pearson:.4f}')
+
+            pickle.dump(reg1, open(f'weights/reg1/reg1_{counter:03d}', 'wb'))
+            pickle.dump(reg2, open(f'weights/reg2/reg2_{counter:03d}', 'wb'))
+            pickle.dump(cluster, open(f'weights/cluster/cluster_{counter:03d}', 'wb'))
+            counter += 1
 
             bar.update(1)
 

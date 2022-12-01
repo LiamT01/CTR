@@ -1,0 +1,8 @@
+weights/cluster/cluster_001
+weights/reg1/reg1_001
+weights/reg2/reg2_001
+
+1ACB 1 T W
+1ACB 3 F P
+1AG2 5 G E
+1AM7 2 V K
