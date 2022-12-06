@@ -13,7 +13,11 @@ Please cite:
   title={Clustered tree regression to learn protein energy change with mutated amino acid},
   author={Tu, Hongwei and Han, Yanqiang and Wang, Zhilong and Li, Jinjin},
   journal={Briefings in Bioinformatics},
-  year={2022}
+  volume={23},
+  number={6},
+  pages={bbac374},
+  year={2022},
+  publisher={Oxford University Press}
 }
 ```
 
