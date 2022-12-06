@@ -87,6 +87,13 @@ Please cite:
 
 The prediction accuracy may differ slightly from that in the paper due to the version of XGBoost in use.
 
+## Trained Models
+
+Trained model weights can be downloaded from:
+
+1. Google Drive: <https://drive.google.com/file/d/1GaInKSR9vNEMG-B4jfPu3_6I4iEbJhlb/view?usp=sharing>
+2. 百度网盘：<https://pan.baidu.com/s/1DM4qnYo85XbgjloKv7rGkQ>，提取码: 9ib0
+
 ## License
 
 Distributed under the Apache 2.0 License. See LICENSE for more information.
